@@ -201,6 +201,7 @@ export class Game extends React.Component{
     }
     setName(){
         this.setState({name:this.state.nameInput})
+        alert('game start')
     }
     render(){
         const style={
