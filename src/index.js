@@ -213,15 +213,15 @@ export class Game extends React.Component{
             },
             boxStyle:{
                 display:'flex',
-                width: '148px',
-                height: '148px',
+                width: '73px',
+                height: '73px',
                 border: '1px solid black',
                 alignItems: 'center',
                 justifyContent: 'center'
             },
             bigBoxStyle:{
-                width: '450px',
-                height: '450px',
+                width: '225px',
+                height: '225px',
                 display: 'flex',
                 flexDirection:'row',
                 flexWrap: 'wrap'
