@@ -235,7 +235,7 @@ export class Game extends React.Component{
                         <br></br>
                         <input type="text" name="name" onChange={this.handleNameInput}/>
                     </label>
-                        <br/><br/><br/>
+                        
                         <input type="button" value="Start Game" onClick={this.setName}/>
                 </form>
                 <div>Step Count:{this.state.step}</div>
