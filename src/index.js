@@ -2,6 +2,32 @@ import React from 'react'
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 
+class OneRank extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+        };
+    }
+    render(){
+        const style ={
+            rank:{
+                display: 'flex',
+                flexDirection:'row',
+                width:'400px',
+                justifyContent:'space-between'
+                
+            }
+        } 
+        return(
+            <div style= {style.rank}>
+                <div>rank: {this.props.rank}</div>
+                <div>name: {this.props.value.name}</div>
+                <div>step: {this.props.value.step}</div>
+            </div>
+        )
+    }
+}
+
 export class Ranking extends React.Component{
     constructor(props) {
         super(props);
@@ -9,8 +35,27 @@ export class Ranking extends React.Component{
         };
     }
     render(){
+        let rankingList=[];
+        let rank = 0;
+        if(!localStorage.ranking){
+            rankingList.push(<div>no record</div>)
+        }else{
+            for(rank;rank<JSON.parse(localStorage.ranking).length;rank++){
+                rankingList.push(<div><OneRank rank={rank+1} value={JSON.parse(localStorage.ranking)[rank]}/></div>)
+            }
+        }
+        /*map 似乎做不到？
+        let rankingList = Object.values(JSON.parse(localStorage.ranking)).map((value, key)=>(
+            <div>
+                <OneRank key={key} value={value}/>
+            </div>
+        ))*/
         return(
-            <div>ranking</div>
+            <div>
+                <div>
+                    {rankingList}
+                </div>
+            </div>
         )
     }
 }
@@ -73,7 +118,18 @@ export class Game extends React.Component{
                             for(let rec=0;rec<JSON.parse(window.localStorage.ranking).length;rec++){
                                 array.push(JSON.parse(window.localStorage.ranking)[rec])
                             }
-                            array.push(record)
+                            let insertPosition = JSON.parse(window.localStorage.ranking).length;
+                            for(let rec=0;rec<JSON.parse(window.localStorage.ranking).length;rec++){
+                                if(record.step<JSON.parse(window.localStorage.ranking)[rec].step){
+                                    console.log("rec"+rec)
+                                    console.log("newrecord"+record.step)
+                                    console.log(JSON.parse(window.localStorage.ranking)[rec].step)
+                                    insertPosition=rec;
+                                    break;
+                                }
+                            }
+                            array.splice(insertPosition,0,record)
+                            console.log(array)
                         }
                         localStorage.setItem("ranking",JSON.stringify(array))
                         this.setState({step:0})
@@ -151,19 +207,21 @@ export class Game extends React.Component{
             viewStyle:{
                 display:'flex',
                 flexDirection:'column',
-                alignItems: 'center'
+                alignItems: 'center',
+                height: '500px',
+                justifyContent: 'space-between'
             },
             boxStyle:{
                 display:'flex',
-                width: '48px',
-                height: '48px',
+                width: '148px',
+                height: '148px',
                 border: '1px solid black',
                 alignItems: 'center',
                 justifyContent: 'center'
             },
             bigBoxStyle:{
-                width: '150px',
-                height: '150px',
+                width: '450px',
+                height: '450px',
                 display: 'flex',
                 flexDirection:'row',
                 flexWrap: 'wrap'
@@ -177,7 +235,7 @@ export class Game extends React.Component{
                         <br></br>
                         <input type="text" name="name" onChange={this.handleNameInput}/>
                     </label>
-                        <br></br>
+                        <br/><br/><br/>
                         <input type="button" value="Start Game" onClick={this.setName}/>
                 </form>
                 <div>Step Count:{this.state.step}</div>
